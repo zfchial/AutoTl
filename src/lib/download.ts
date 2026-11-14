@@ -1,0 +1,20 @@
+// Helper download file di browser.
+
+export function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+export function downloadText(text: string, filename: string) {
+  downloadBlob(new Blob([text], { type: "text/plain;charset=utf-8" }), filename);
+}
+
+export function safeFilename(name: string): string {
+  return name.replace(/[\\/:*?"<>|]+/g, "_").replace(/\s+/g, " ").trim().slice(0, 120) || "terjemahan";
+}
